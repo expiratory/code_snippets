@@ -1,0 +1,13 @@
+README.md
+docker-compose.yml
+LICENSE
+.git
+.gitignore
+.venv
+.env
+__pycache__
+*.pyc
+*.pyo
+*.mypy_cache
+*.pytest_cache
+db_data
