@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 
 export const GoogleRegister: React.FC = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     password: '',
@@ -37,15 +36,19 @@ export const GoogleRegister: React.FC = () => {
   };
 
   useEffect(() => {
-    const tokenParam = searchParams.get('token');
-    const emailParam = searchParams.get('email');
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+
+    const tokenParam = params.get('token');
+    const emailParam = params.get('email');
+
     if (tokenParam && emailParam) {
       setToken(tokenParam);
       setEmail(emailParam);
     } else {
       navigate('/login');
     }
-  }, [searchParams, navigate]);
+  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

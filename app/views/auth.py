@@ -74,7 +74,7 @@ async def google_callback(request: Request, session: AsyncSession = Depends(get_
             data={"sub": str(user.id), "email": user.email}
         )
         return RedirectResponse(
-            url=f"{settings.FRONTEND_URL}/auth/callback?token={access_token}&refresh_token={refresh_token}"
+            url=f"{settings.FRONTEND_URL}/auth/callback#token={access_token}&refresh_token={refresh_token}"
         )
     else:
         reg_token = create_registration_token(
@@ -82,7 +82,7 @@ async def google_callback(request: Request, session: AsyncSession = Depends(get_
             expires_delta=timedelta(minutes=15),
         )
         return RedirectResponse(
-            url=f"{settings.FRONTEND_URL}/auth/google-register?token={reg_token}&email={email}"
+            url=f"{settings.FRONTEND_URL}/auth/google-register#token={reg_token}&email={email}"
         )
 
 

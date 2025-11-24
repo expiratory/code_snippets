@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 
 export const AuthCallback: React.FC = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = searchParams.get('token');
-    const refreshToken = searchParams.get('refresh_token');
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+
+    const token = params.get('token');
+    const refreshToken = params.get('refresh_token');
+
     if (token && refreshToken) {
       authService.setToken({
         access_token: token,
@@ -21,7 +24,7 @@ export const AuthCallback: React.FC = () => {
     } else {
       navigate('/login');
     }
-  }, [searchParams, navigate]);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-bg">
