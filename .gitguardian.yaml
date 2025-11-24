@@ -1,0 +1,8 @@
+# GitGuardian configuration file
+# This file configures which paths and patterns GitGuardian should ignore
+
+version: v1
+
+paths-ignore:
+  - tests/**
+  - .example.env
