@@ -18,14 +18,14 @@ async def process_message(message, search_service: SearchService):
 
         logger.info(f"Received event: {event}")
 
-        if event in (SnippetEventEnum.CREATED, SnippetEventEnum.UPDATED):
+        if event in (SnippetEventEnum.CREATED.value, SnippetEventEnum.UPDATED.value):
             await search_service.index_snippet(
                 snippet_id=payload["id"],
                 title=payload["title"],
                 code=payload["code"],
                 language=payload["language"],
             )
-        elif event == SnippetEventEnum.DELETED:
+        elif event == SnippetEventEnum.DELETED.value:
             await search_service.delete_snippet(snippet_id=payload["id"])
 
 

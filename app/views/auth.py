@@ -148,7 +148,7 @@ async def register(
         )
 
         return {
-            "user": UserResponse.from_orm(db_user),
+            "user": UserResponse.model_validate(db_user),
             "token": Token(access_token=access_token, refresh_token=refresh_token),
         }
     except UserAlreadyExistsError as e:
@@ -233,7 +233,7 @@ async def change_password(
             detail="New password must be different from old password",
         )
 
-    if password_data.new_password != password_data.confirm_password:
+    if password_data.new_password != password_data.confirm_new_password:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Passwords do not match"
         )
@@ -247,4 +247,4 @@ async def change_password(
 @router.get("/me", response_model=UserResponse)
 async def get_current_user_info(current_user: User = Depends(get_current_user)):
     """Get current user information."""
-    return UserResponse.from_orm(current_user)
+    return UserResponse.model_validate(current_user)

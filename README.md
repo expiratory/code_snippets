@@ -2,7 +2,7 @@
 
 Personal code snippets library
 
-Backend - FastAPI, PostgreSQL, SQLAlchemy, Alembic, Poetry
+Backend - FastAPI, PostgreSQL, SQLAlchemy, Alembic, Poetry, Pytest
 
 Frontend - React, TS, Vite, Tailwind, Lucide
 
@@ -27,6 +27,11 @@ docker compose -f 'docker-compose.dev.yml' up -d --build
 - Apply migrations
 ```bash
 docker compose exec app alembic upgrade head
+```
+
+- Run tests
+```bash
+docker compose exec app poetry run pytest --cov=app tests/
 ```
 
 - Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to .env file (optionally).
