@@ -15,7 +15,7 @@ export const Home: React.FC = () => {
               Code Snippets
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 leading-relaxed">
-              Your personal code library. Save, manage, search and access your favorite code snippets from anywhere.
+              Your personal code library. Save, manage, search, access and run your favorite code snippets from anywhere.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -1,6 +1,6 @@
 # Code Snippets
 
-Personal code snippets library
+Personal code snippets library. Manage and run your code snippets.
 
 Backend - FastAPI, PostgreSQL, SQLAlchemy, Alembic, Poetry, Pytest, Docker (for running code)
 

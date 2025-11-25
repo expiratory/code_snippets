@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
             <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
               Code Snippets
             </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">Manage your code fragments efficiently.</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Manage and run your code fragments efficiently.</span>
           </div>
         </Link>
 

@@ -40,6 +40,11 @@ class CodeRunnerService:
                 cpu_quota=10000,  # 10%
                 network_mode="none",
                 working_dir="/tmp",
+                read_only=True,  # Read-only root filesystem
+                tmpfs={"/tmp": "size=10m,mode=1777"},  # Writable /tmp with size limit
+                cap_drop=["ALL"],  # Drop all capabilities
+                security_opt=["no-new-privileges"],  # Prevent privilege escalation
+                pids_limit=50,  # Limit number of processes
                 stdout=True,
                 stderr=True,
                 detach=True,
