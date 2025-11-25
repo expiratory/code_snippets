@@ -12,6 +12,7 @@ from app.db import engine
 from app.handlers import register_handlers
 from app.limiter import limiter
 from app.views.auth import router as auth_router
+from app.views.code_runner import router as code_runner_router
 from app.views.language import router as language_router
 from app.views.snippet import router as snippet_router
 from app.views.tag import router as tag_router
@@ -50,3 +51,4 @@ app.include_router(auth_router)
 app.include_router(snippet_router)
 app.include_router(tag_router)
 app.include_router(language_router)
+app.include_router(code_runner_router)

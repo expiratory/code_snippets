@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Trash2, Copy, Check, Edit } from 'lucide-react';
+import { Trash2, Copy, Check, Edit, Play } from 'lucide-react';
 import api from '../lib/api';
 import type { Snippet } from '../types';
 import { CodeEditor } from './CodeEditor';
@@ -82,6 +82,18 @@ export const SnippetDetail: React.FC = () => {
               title="Copy code"
             >
               {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
+            </button>
+            <button
+              onClick={() => navigate('/run', {
+                state: {
+                  code: snippet.code,
+                  language: typeof snippet.language === 'object' ? snippet.language?.name : snippet.language
+                }
+              })}
+              className="p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all"
+              title="Run snippet"
+            >
+              <Play className="w-5 h-5" />
             </button>
             <Link
               to={`/snippets/${id}/edit`}

@@ -198,7 +198,7 @@ export const SnippetForm: React.FC = () => {
               />
             </div>
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              Maximum 100 lines allowed.
+              Maximum 10000 characters allowed.
             </p>
           </div>
 

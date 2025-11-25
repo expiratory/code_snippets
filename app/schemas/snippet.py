@@ -18,8 +18,8 @@ class SnippetCreate(SnippetBase):
     @field_validator("code")
     @classmethod
     def validate_code_length(cls, v: str) -> str:
-        if len(v.splitlines()) > 100:
-            raise ValueError("Code snippet must be 100 lines or less")
+        if len(v) > 10000:
+            raise ValueError("Code snippet must be 10000 characters or less")
         return v
 
 
