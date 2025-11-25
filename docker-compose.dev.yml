@@ -61,7 +61,7 @@ services:
     networks:
       - app-network
 
-  worker:
+  snippet-worker:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -71,6 +71,24 @@ services:
       - redis
       - rabbitmq
       - elasticsearch
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  code-runner-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: code_snippets-code-runner-worker
+    command: >
+      sh -c "python -m app.workers.init_images && python -m app.workers.code_runner"
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - rabbitmq
+      - redis
     env_file:
       - .env
     networks:

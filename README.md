@@ -2,7 +2,7 @@
 
 Personal code snippets library
 
-Backend - FastAPI, PostgreSQL, SQLAlchemy, Alembic, Poetry, Pytest
+Backend - FastAPI, PostgreSQL, SQLAlchemy, Alembic, Poetry, Pytest, Docker (for running code)
 
 Frontend - React, TS, Vite, Tailwind, Lucide
 
@@ -14,7 +14,7 @@ Auth - JWT + Refresh tokens, also uses Google OAuth 2.0
 
 At project root directory
 
-- Create your .env file (optionally)
+- Create your .env file
 ```bash
 cp .example.env .env
 ```
@@ -29,12 +29,17 @@ docker compose -f 'docker-compose.dev.yml' up -d --build
 docker compose exec app alembic upgrade head
 ```
 
-- Run tests
+- Make new migrations
 ```bash
-docker compose exec app poetry run pytest --cov=app tests/
+docker compose exec app alembic revision --autogenerate -m "message"
 ```
 
-- Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to .env file (optionally).
+- Run tests
+```bash
+docker compose exec app pytest --cov=app tests/
+```
+
+- Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to .env file.
 App would be using only username and email from Google account.
 For your client in Google Auth Platform you should use this Redirect URI (local dev):
 ```

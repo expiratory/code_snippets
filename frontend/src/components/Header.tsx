@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LogIn, User, UserPlus, Code2, Tag as TagIcon, PlusCircle } from 'lucide-react';
+import { LogIn, User, UserPlus, Code2, Tag as TagIcon, PlusCircle, Terminal } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { authService } from '../services/authService';
 
@@ -34,6 +34,13 @@ export const Header: React.FC = () => {
           <ThemeToggle />
           {isAuthenticated ? (
             <>
+              <Link
+                to="/run"
+                className="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-surface rounded-lg transition-colors font-medium"
+              >
+                <Terminal className="w-5 h-5" />
+                <span>Run Code</span>
+              </Link>
               <Link
                 to="/tags"
                 className="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-surface rounded-lg transition-colors font-medium"

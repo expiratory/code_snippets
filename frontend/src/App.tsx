@@ -13,6 +13,7 @@ import { ThemeProvider } from './context/ThemeContext';
 
 import { Home } from './components/Home';
 import { TagManager } from './components/TagManager';
+import { CodeRunner } from './components/CodeRunner';
 import { authService } from './services/authService';
 
 import { useEffect, useState } from 'react';
@@ -53,7 +54,9 @@ function App() {
               <Route path="/new" element={<SnippetForm />} />
               <Route path="/snippets/:id/edit" element={<SnippetForm />} />
               <Route path="/snippets/:id" element={<SnippetDetail />} />
+
               <Route path="/tags" element={<PrivateRoute><TagManager /></PrivateRoute>} />
+              <Route path="/run" element={<CodeRunner />} />
             </Routes>
           </main>
         </div>

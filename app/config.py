@@ -14,6 +14,9 @@ class Settings:
 
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
     GOOGLE_CLIENT_SECRET: str = os.getenv("GOOGLE_CLIENT_SECRET", "")
+
+    MAX_CONCURRENT_EXECUTIONS: int = int(os.getenv("MAX_CONCURRENT_EXECUTIONS", "3"))
+
     FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
     REDIS_HOST: str = os.getenv("REDIS_HOST", "redis")
