@@ -29,6 +29,8 @@ docker compose -f 'docker-compose.dev.yml' up -d --build
 docker compose exec app alembic upgrade head
 ```
 
+## Additionally
+
 - Make new migrations
 ```bash
 docker compose exec app alembic revision --autogenerate -m "message"
@@ -46,7 +48,7 @@ For your client in Google Auth Platform you should use this Redirect URI (local 
 http://localhost:8000/auth/google/callback
 ```
 
-By default at your localhost:
+### By default at your localhost:
 
 Frontend is up on 3000 port
 
