@@ -1,5 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, exc, select
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, selectinload
 
 from app.db import SessionLocal
 from app.errors.tag import TagNotFoundError
@@ -91,8 +91,6 @@ class Tag(Base):
 
     @classmethod
     async def delete(cls, session: SessionLocal, id: int, user_id: int) -> "Tag":
-        from sqlalchemy.orm import selectinload
-
         try:
             result = await session.execute(
                 select(Tag)

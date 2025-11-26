@@ -1,5 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Table, exc, select
-from sqlalchemy.orm import relationship, selectinload
+from sqlalchemy.orm import relationship, selectinload, joinedload
 
 from app.db import SessionLocal
 from app.errors.snippet import SnippetNotFoundError
@@ -32,7 +32,7 @@ class Snippet(Base):
             result = await session.execute(
                 select(Snippet)
                 .filter(Snippet.id == id, Snippet.user_id == user_id)
-                .options(selectinload(Snippet.tags), selectinload(Snippet.language))
+                .options(selectinload(Snippet.tags), joinedload(Snippet.language))
             )
             return result.scalar_one()
         except exc.NoResultFound:
@@ -77,7 +77,7 @@ class Snippet(Base):
         query = (
             query.offset(offset)
             .limit(limit)
-            .options(selectinload(Snippet.tags), selectinload(Snippet.language))
+            .options(selectinload(Snippet.tags), joinedload(Snippet.language))
         )
 
         result = await session.execute(query)
@@ -88,7 +88,7 @@ class Snippet(Base):
         result = await session.execute(
             select(Snippet)
             .filter(Snippet.id.in_(ids))
-            .options(selectinload(Snippet.tags), selectinload(Snippet.language))
+            .options(selectinload(Snippet.tags), joinedload(Snippet.language))
         )
         return result.scalars().all()
 
@@ -124,7 +124,7 @@ class Snippet(Base):
         result = await session.execute(
             select(Snippet)
             .filter(Snippet.id == db_snippet.id)
-            .options(selectinload(Snippet.tags), selectinload(Snippet.language))
+            .options(selectinload(Snippet.tags), joinedload(Snippet.language))
         )
         db_snippet = result.scalar_one()
 
@@ -149,7 +149,7 @@ class Snippet(Base):
             result = await session.execute(
                 select(Snippet)
                 .filter(Snippet.id == id, Snippet.user_id == user_id)
-                .options(selectinload(Snippet.tags), selectinload(Snippet.language))
+                .options(selectinload(Snippet.tags), joinedload(Snippet.language))
             )
             db_snippet = result.scalar_one()
         except exc.NoResultFound:
@@ -201,7 +201,7 @@ class Snippet(Base):
             result = await session.execute(
                 select(Snippet)
                 .filter(Snippet.id == id, Snippet.user_id == user_id)
-                .options(selectinload(Snippet.tags), selectinload(Snippet.language))
+                .options(selectinload(Snippet.tags), joinedload(Snippet.language))
             )
             db_snippet = result.scalar_one()
         except exc.NoResultFound:
