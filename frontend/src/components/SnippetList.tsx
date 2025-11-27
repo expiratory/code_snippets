@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Search, Filter, ChevronDown, Check } from 'lucide-react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import type { Snippet, Tag } from '../types';
 import { SnippetCard } from './SnippetCard';
@@ -13,6 +14,7 @@ interface Language {
 }
 
 export const SnippetList: React.FC = () => {
+  const { t } = useTranslation();
   const [snippets, setSnippets] = useState<Snippet[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -137,7 +139,7 @@ export const SnippetList: React.FC = () => {
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
             type="text"
-            placeholder="Search snippets..."
+            placeholder={t('snippets.search_placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-12 pr-4 py-4 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-gray-900 dark:text-white placeholder-gray-500"
@@ -149,7 +151,7 @@ export const SnippetList: React.FC = () => {
             className="w-full pl-12 pr-4 py-4 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-left flex items-center justify-between text-gray-900 dark:text-white"
           >
             <Filter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <span className="truncate">{selectedTag || 'All Tags'}</span>
+            <span className="truncate">{selectedTag || t('snippets.all_tags')}</span>
             <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isDropdownOpen ? 'transform rotate-180' : ''}`} />
           </button>
 
@@ -164,7 +166,7 @@ export const SnippetList: React.FC = () => {
                   selectedTag === '' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
-                <span>All Tags</span>
+                <span>{t('snippets.all_tags')}</span>
                 {selectedTag === '' && <Check className="w-4 h-4" />}
               </button>
               {tags.map(tag => (
@@ -197,7 +199,7 @@ export const SnippetList: React.FC = () => {
       </div>
 
       {loading && snippets.length === 0 ? (
-        <div className="text-center text-gray-500 dark:text-gray-400 py-12">Loading snippets...</div>
+        <div className="text-center text-gray-500 dark:text-gray-400 py-12">{t('snippets.loading')}</div>
       ) : (
         <>
           {snippets.length > 0 ? (
@@ -211,16 +213,16 @@ export const SnippetList: React.FC = () => {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-dark-surface mb-6">
                 <Search className="w-8 h-8 text-gray-400" />
               </div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">No snippets found</h3>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">{t('snippets.no_snippets_title')}</h3>
               <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                We couldn't find any snippets matching your search. Try adjusting your filters or create a new snippet.
+                {t('snippets.no_snippets_desc')}
               </p>
             </div>
           )}
 
           {hasMore && snippets.length > 0 && (
             <div ref={observerTarget} className="h-10 flex items-center justify-center mt-8">
-              {loading && <div className="text-gray-500 dark:text-gray-400">Loading more...</div>}
+              {loading && <div className="text-gray-500 dark:text-gray-400">{t('snippets.loading_more')}</div>}
             </div>
           )}
         </>

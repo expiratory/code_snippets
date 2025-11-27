@@ -73,7 +73,7 @@ export const GoogleRegister: React.FC = () => {
         ...formData,
         registration_token: token,
       });
-      navigate('/');
+      navigate('/', { replace: true });
     } catch (err: any) {
       const detail = err.response?.data?.detail;
       if (typeof detail === 'string') {

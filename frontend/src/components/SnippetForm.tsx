@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Save } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import { CodeEditor } from './CodeEditor';
 import { LanguageSelect } from './LanguageSelect';
@@ -12,6 +13,7 @@ interface Language {
 }
 
 export const SnippetForm: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditing = !!id;
@@ -93,7 +95,7 @@ export const SnippetForm: React.FC = () => {
     setLoading(true);
     const lineCount = formData.code.split('\n').length;
     if (lineCount > 100) {
-      alert('Code snippet must be 100 lines or less');
+      alert(t('snippets.form.error_lines'));
       setLoading(false);
       return;
     }
@@ -122,25 +124,25 @@ export const SnippetForm: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200 dark:border-dark-border p-8 shadow-xl dark:shadow-none">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          {isEditing ? 'Edit Snippet' : 'Create New Snippet'}
+          {isEditing ? t('snippets.form.edit_title') : t('snippets.form.create_title')}
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Title</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('snippets.form.title_label')}</label>
               <input
                 type="text"
                 required
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 className="w-full bg-gray-50 dark:bg-[#0f0f11] border border-gray-200 dark:border-dark-border text-gray-900 dark:text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
-                placeholder="e.g., Binary Search Implementation"
+                placeholder={t('snippets.form.title_placeholder')}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Language</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('snippets.form.language_label')}</label>
               <LanguageSelect
                 value={formData.language}
                 onChange={(language) => setFormData({ ...formData, language })}
@@ -149,7 +151,7 @@ export const SnippetForm: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Tags</label>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('snippets.form.tags_label')}</label>
             <div className="space-y-3">
               <div className="flex flex-wrap gap-2 mb-2">
                 {formData.tags.map(tag => (
@@ -167,11 +169,11 @@ export const SnippetForm: React.FC = () => {
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleAddTag}
                 className="w-full bg-gray-50 dark:bg-[#0f0f11] border border-gray-200 dark:border-dark-border text-gray-900 dark:text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
-                placeholder="Type tag and press Enter"
+                placeholder={t('snippets.form.tags_placeholder')}
               />
               {availableTags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 mr-2 py-1">Suggested:</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 mr-2 py-1">{t('snippets.form.suggested_tags')}</span>
                   {availableTags.filter(t => !formData.tags.includes(t)).map(tag => (
                     <button
                       key={tag}
@@ -188,7 +190,7 @@ export const SnippetForm: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Code</label>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('snippets.form.code_label')}</label>
             <div className="border border-gray-200 dark:border-dark-border rounded-xl overflow-hidden">
               <CodeEditor
                 value={formData.code}
@@ -198,7 +200,7 @@ export const SnippetForm: React.FC = () => {
               />
             </div>
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              Maximum 10000 characters allowed.
+              {t('snippets.form.max_chars')}
             </p>
           </div>
 
@@ -208,7 +210,7 @@ export const SnippetForm: React.FC = () => {
             className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-xl transition-all shadow-lg shadow-primary-900/20 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
           >
             <Save className="w-5 h-5" />
-            {loading ? 'Saving...' : (isEditing ? 'Update Snippet' : 'Save Snippet')}
+            {loading ? t('snippets.form.saving') : (isEditing ? t('snippets.form.update') : t('snippets.form.save'))}
           </button>
         </form>
       </div>
