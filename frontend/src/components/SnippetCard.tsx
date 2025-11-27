@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Code2, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Snippet } from '../types';
 
 interface SnippetCardProps {
@@ -8,6 +9,8 @@ interface SnippetCardProps {
 }
 
 export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-dark-border group">
       <div className="flex items-start justify-between mb-4">
@@ -33,7 +36,7 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
         to={`/snippets/${snippet.id}`}
         className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
       >
-        View Details <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+        {t('snippets.view_details')} <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
       </Link>
     </div>
   );

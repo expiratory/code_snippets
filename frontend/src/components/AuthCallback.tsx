@@ -18,9 +18,7 @@ export const AuthCallback: React.FC = () => {
         refresh_token: refreshToken,
         token_type: 'bearer',
       });
-      setTimeout(() => {
-        navigate('/');
-      }, 100);
+      navigate('/', { replace: true });
     } else {
       navigate('/login');
     }

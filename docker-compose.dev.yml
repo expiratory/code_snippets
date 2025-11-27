@@ -95,13 +95,15 @@ services:
       - app-network
 
   frontend:
-    image: node:20-alpine
-    working_dir: /app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
     volumes:
       - ./frontend:/app
+      - /app/node_modules
+      - /app/dist
     ports:
       - "3000:3000"
-    command: sh -c "npm install && npm run dev -- --host"
     networks:
       - app-network
 

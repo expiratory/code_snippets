@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '../services/authService';
 
 export const Register: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -12,24 +15,26 @@ export const Register: React.FC = () => {
   });
   const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validatePassword = (password: string): string[] => {
     const errors: string[] = [];
 
     if (password.length < 8) {
-      errors.push('Password must be at least 8 characters long');
+      errors.push(t('auth.errors.password_length'));
     }
     if (!/[A-Z]/.test(password)) {
-      errors.push('Password must contain at least one uppercase letter');
+      errors.push(t('auth.errors.password_uppercase'));
     }
     if (!/[a-z]/.test(password)) {
-      errors.push('Password must contain at least one lowercase letter');
+      errors.push(t('auth.errors.password_lowercase'));
     }
     if (!/\d/.test(password)) {
-      errors.push('Password must contain at least one digit');
+      errors.push(t('auth.errors.password_digit'));
     }
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      errors.push('Password must contain at least one special character');
+      errors.push(t('auth.errors.password_special'));
     }
 
     return errors;
@@ -40,7 +45,7 @@ export const Register: React.FC = () => {
     setErrors([]);
 
     if (formData.password !== formData.confirmPassword) {
-      setErrors(['Passwords do not match']);
+      setErrors([t('auth.errors.password_mismatch')]);
       return;
     }
 
@@ -67,7 +72,7 @@ export const Register: React.FC = () => {
       } else if (Array.isArray(detail)) {
         setErrors(detail.map((e: any) => e.msg || JSON.stringify(e)));
       } else {
-        setErrors(['Registration failed. Please try again.']);
+        setErrors([t('auth.errors.registration_failed')]);
       }
     } finally {
       setLoading(false);
@@ -79,10 +84,10 @@ export const Register: React.FC = () => {
       <div className="max-w-md w-full">
         <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-dark-border">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            Create Account
+            {t('auth.register.title')}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-8">
-            Sign up to get started
+            {t('auth.register.subtitle')}
           </p>
 
           {errors.length > 0 && (
@@ -98,7 +103,7 @@ export const Register: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Email
+                {t('auth.email')}
               </label>
               <input
                 type="email"
@@ -111,7 +116,7 @@ export const Register: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Username
+                {t('auth.username')}
               </label>
               <input
                 type="text"
@@ -126,30 +131,48 @@ export const Register: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Password
+                {t('auth.password')}
               </label>
-              <input
-                type="password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all pr-12"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Confirm Password
+                {t('auth.confirm_password')}
               </label>
-              <input
-                type="password"
-                value={formData.confirmPassword}
-                onChange={(e) =>
-                  setFormData({ ...formData, confirmPassword: e.target.value })
-                }
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    setFormData({ ...formData, confirmPassword: e.target.value })
+                  }
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all pr-12"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
+                >
+                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
 
             <button
@@ -157,7 +180,7 @@ export const Register: React.FC = () => {
               disabled={loading}
               className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-dark-surface transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Creating account...' : 'Create Account'}
+              {loading ? t('auth.register.submitting') : t('auth.register.submit')}
             </button>
           </form>
 
@@ -167,7 +190,7 @@ export const Register: React.FC = () => {
                 <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-dark-surface text-gray-500">Or continue with</span>
+                <span className="px-2 bg-white dark:bg-dark-surface text-gray-500">{t('auth.or_continue')}</span>
               </div>
             </div>
 
@@ -194,19 +217,19 @@ export const Register: React.FC = () => {
                     fill="#EA4335"
                   />
                 </svg>
-                Sign up with Google
+                {t('auth.google_signup')}
               </a>
             </div>
           </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Already have an account?{' '}
+              {t('auth.register.has_account')}{' '}
               <button
                 onClick={() => navigate('/login')}
                 className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors"
               >
-                Sign in
+                {t('auth.sign_in_link')}
               </button>
             </p>
           </div>

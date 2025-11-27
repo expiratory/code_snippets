@@ -18,16 +18,22 @@ import { authService } from './services/authService';
 
 import { useEffect, useState } from 'react';
 
-function App() {
+const HomeRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isAuthenticated());
 
   useEffect(() => {
+    setIsAuthenticated(authService.isAuthenticated());
+
     const unsubscribe = authService.subscribe(() => {
       setIsAuthenticated(authService.isAuthenticated());
     });
     return unsubscribe;
   }, []);
 
+  return isAuthenticated ? <SnippetList /> : <Home />;
+};
+
+function App() {
   return (
     <ThemeProvider>
       <Router>
@@ -49,7 +55,7 @@ function App() {
               />
               <Route
                 path="/"
-                element={isAuthenticated ? <SnippetList /> : <Home />}
+                element={<HomeRoute />}
               />
               <Route path="/new" element={<SnippetForm />} />
               <Route path="/snippets/:id/edit" element={<SnippetForm />} />

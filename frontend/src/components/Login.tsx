@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '../services/authService';
 
 export const Login: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -10,6 +13,7 @@ export const Login: React.FC = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +24,7 @@ export const Login: React.FC = () => {
       await authService.login(formData);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Login failed. Please check your credentials.');
+      setError(err.response?.data?.detail || t('auth.login.error'));
     } finally {
       setLoading(false);
     }
@@ -31,10 +35,10 @@ export const Login: React.FC = () => {
       <div className="max-w-md w-full">
         <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-dark-border">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            Welcome Back
+            {t('auth.login.welcome')}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-8">
-            Sign in to your account
+            {t('auth.login.subtitle')}
           </p>
 
           {error && (
@@ -46,7 +50,7 @@ export const Login: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Email
+                {t('auth.email')}
               </label>
               <input
                 type="email"
@@ -61,17 +65,26 @@ export const Login: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Password
+                {t('auth.password')}
               </label>
-              <input
-                type="password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all pr-12"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
 
             <button
@@ -79,7 +92,7 @@ export const Login: React.FC = () => {
               disabled={loading}
               className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-dark-surface transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? t('auth.login.submitting') : t('auth.login.submit')}
             </button>
           </form>
 
@@ -89,7 +102,7 @@ export const Login: React.FC = () => {
                 <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-dark-surface text-gray-500">Or continue with</span>
+                <span className="px-2 bg-white dark:bg-dark-surface text-gray-500">{t('auth.or_continue')}</span>
               </div>
             </div>
 
@@ -116,19 +129,19 @@ export const Login: React.FC = () => {
                     fill="#EA4335"
                   />
                 </svg>
-                Sign in with Google
+                {t('auth.google_login')}
               </a>
             </div>
           </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Don't have an account?{' '}
+              {t('auth.login.no_account')}{' '}
               <button
                 onClick={() => navigate('/register')}
                 className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors"
               >
-                Sign up
+                {t('auth.sign_up_link')}
               </button>
             </p>
           </div>

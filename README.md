@@ -4,7 +4,7 @@ Personal code snippets library. Manage and run your code snippets.
 
 Backend - FastAPI, PostgreSQL, SQLAlchemy, Alembic, Poetry, Pytest, Docker (for running code)
 
-Frontend - React, TS, Vite, Tailwind, Lucide
+Frontend - React, TS, Vite, Tailwind, Lucide, React i18next
 
 Also uses RabbitMQ, Elasticsearch, Redis
 

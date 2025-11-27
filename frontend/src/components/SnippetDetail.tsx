@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Trash2, Copy, Check, Edit, Play } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import type { Snippet } from '../types';
 import { CodeEditor } from './CodeEditor';
 import Modal from './Modal';
 
 export const SnippetDetail: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [snippet, setSnippet] = useState<Snippet | null>(null);
@@ -50,7 +52,7 @@ export const SnippetDetail: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="text-center text-gray-400 py-12">Loading...</div>;
+  if (loading) return <div className="text-center text-gray-400 py-12">{t('loading')}</div>;
   if (!snippet) return null;
 
   return (
@@ -79,7 +81,7 @@ export const SnippetDetail: React.FC = () => {
             <button
               onClick={handleCopy}
               className="p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all"
-              title="Copy code"
+              title={t('snippets.detail.copy')}
             >
               {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
             </button>
@@ -91,21 +93,21 @@ export const SnippetDetail: React.FC = () => {
                 }
               })}
               className="p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all"
-              title="Run snippet"
+              title={t('snippets.detail.run')}
             >
               <Play className="w-5 h-5" />
             </button>
             <Link
               to={`/snippets/${id}/edit`}
               className="p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all"
-              title="Edit snippet"
+              title={t('snippets.detail.edit')}
             >
               <Edit className="w-5 h-5" />
             </Link>
             <button
               onClick={handleDeleteClick}
               className="p-2.5 text-gray-500 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-xl transition-all"
-              title="Delete snippet"
+              title={t('snippets.detail.delete')}
             >
               <Trash2 className="w-5 h-5" />
             </button>
@@ -125,24 +127,24 @@ export const SnippetDetail: React.FC = () => {
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title="Delete Snippet"
+        title={t('snippets.detail.delete_modal.title')}
       >
         <div className="space-y-6">
           <p className="text-gray-600 dark:text-gray-300">
-            Are you sure you want to delete this snippet? This action cannot be undone.
+            {t('snippets.detail.delete_modal.confirm')}
           </p>
           <div className="flex justify-end gap-3">
             <button
               onClick={() => setIsDeleteModalOpen(false)}
               className="px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium"
             >
-              Cancel
+              {t('snippets.detail.delete_modal.cancel')}
             </button>
             <button
               onClick={handleConfirmDelete}
               className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium shadow-sm"
             >
-              Delete Snippet
+              {t('snippets.detail.delete_modal.delete_btn')}
             </button>
           </div>
         </div>

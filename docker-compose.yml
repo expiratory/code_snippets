@@ -95,13 +95,11 @@ services:
       - app-network
 
   frontend:
-    image: node:20-alpine
-    working_dir: /app
-    volumes:
-      - ./frontend:/app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    command: sh -c "npm install && npm run build && npx serve -s dist -l 3000"
     networks:
       - app-network
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { Play, Terminal, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const LANGUAGES = [
   { id: 'python', name: 'Python', defaultCode: 'print("Hello, World!")' },
@@ -12,6 +13,7 @@ const LANGUAGES = [
 import { useLocation } from 'react-router-dom';
 
 export function CodeRunner() {
+  const { t } = useTranslation();
   const location = useLocation();
   const initialState = location.state as { code?: string; language?: string } | null;
 
@@ -83,13 +85,13 @@ export function CodeRunner() {
 
   const handleRun = () => {
     if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-        setOutput('Connection lost. Reconnecting...');
+        setOutput(t('runner.connection_lost'));
         // Reconnect logic could be triggered here or handled by the effect
         return;
     }
 
     setIsRunning(true);
-    setOutput('Running...\n');
+    setOutput(t('runner.running') + '\n');
 
     wsRef.current.send(JSON.stringify({
         code: code,
@@ -102,7 +104,7 @@ export function CodeRunner() {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
           <Terminal className="w-6 h-6" />
-          Code Runner
+          {t('runner.title')}
         </h1>
         <div className="flex items-center gap-4">
           <select
@@ -126,7 +128,7 @@ export function CodeRunner() {
             ) : (
               <Play className="w-4 h-4 mr-2" />
             )}
-            Run Code
+            {t('runner.run')}
           </button>
         </div>
       </div>
@@ -134,7 +136,7 @@ export function CodeRunner() {
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 min-h-0">
         <div className="border rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-800 flex flex-col">
             <div className="bg-gray-50 dark:bg-gray-700 px-4 py-2 border-b dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-300">
-                Editor
+                {t('runner.editor')}
             </div>
             <div className="flex-1">
                 <Editor
@@ -154,10 +156,10 @@ export function CodeRunner() {
 
         <div className="border rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-800 flex flex-col">
             <div className="bg-gray-50 dark:bg-gray-700 px-4 py-2 border-b dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-300">
-                Output
+                {t('runner.output')}
             </div>
             <pre className="flex-1 p-4 bg-gray-900 text-green-400 font-mono text-sm overflow-auto whitespace-pre-wrap">
-                {output || '// Output will appear here'}
+                {output || t('runner.output_placeholder')}
             </pre>
         </div>
       </div>

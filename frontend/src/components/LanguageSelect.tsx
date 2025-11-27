@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import { Filter, Check } from 'lucide-react';
 import { components, type OptionProps } from 'react-select';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 
 interface Language {
@@ -42,6 +43,7 @@ export const LanguageSelect: React.FC<LanguageSelectProps> = ({
   className,
   variant = 'default'
 }) => {
+  const { t } = useTranslation();
   const [selectKey, setSelectKey] = React.useState(0);
 
   const loadOptions = (inputValue: string, callback: (options: any[]) => void) => {
@@ -53,7 +55,7 @@ export const LanguageSelect: React.FC<LanguageSelectProps> = ({
         value: lang
       }));
       if (variant === 'filter' && !inputValue) {
-        options.unshift({ label: 'All Languages', value: null });
+        options.unshift({ label: t('snippets.languages.all'), value: null });
       }
       callback(options);
     }).catch(error => {
@@ -62,7 +64,7 @@ export const LanguageSelect: React.FC<LanguageSelectProps> = ({
     });
   };
 
-  const debouncedLoadOptions = useCallback(debounce(loadOptions, 300), []);
+  const debouncedLoadOptions = useCallback(debounce(loadOptions, 300), [t]);
 
   const handleCreate = async (inputValue: string) => {
     const trimmedInput = inputValue.trim();
@@ -98,7 +100,7 @@ export const LanguageSelect: React.FC<LanguageSelectProps> = ({
         loadOptions={debouncedLoadOptions}
         onCreateOption={handleCreate}
         onChange={handleChange}
-        value={value ? { label: value.name, value: value } : (variant === 'filter' ? { label: 'All Languages', value: null } : null)}
+        value={value ? { label: value.name, value: value } : (variant === 'filter' ? { label: t('snippets.languages.all'), value: null } : null)}
         className={className}
         isValidNewOption={(inputValue) => variant !== 'filter' && inputValue.trim().length > 0}
         getOptionValue={(option: any) => typeof option.value === 'object' && option.value?.id ? option.value.id.toString() : option.label}
@@ -127,7 +129,7 @@ export const LanguageSelect: React.FC<LanguageSelectProps> = ({
           placeholder: () => '!text-gray-900 dark:!text-white whitespace-nowrap',
           valueContainer: () => variant === 'filter' ? '!pl-0' : '',
         }}
-        placeholder={variant === 'filter' ? "All Languages" : "Select or create language..."}
+        placeholder={variant === 'filter' ? t('snippets.languages.all') : t('snippets.languages.select_placeholder')}
       />
     </div>
   );
