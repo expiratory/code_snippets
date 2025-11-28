@@ -121,14 +121,14 @@ export const SnippetForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <div className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200 dark:border-dark-border p-8 shadow-xl dark:shadow-none">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+    <div className="max-w-4xl mx-auto px-4 py-6 sm:py-12">
+      <div className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200 dark:border-dark-border p-6 sm:p-8 shadow-xl dark:shadow-none">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8">
           {isEditing ? t('snippets.form.edit_title') : t('snippets.form.create_title')}
         </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             <div>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('snippets.form.title_label')}</label>
               <input
@@ -136,7 +136,7 @@ export const SnippetForm: React.FC = () => {
                 required
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full bg-gray-50 dark:bg-[#0f0f11] border border-gray-200 dark:border-dark-border text-gray-900 dark:text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
+                className="w-full bg-gray-50 dark:bg-[#0f0f11] border border-gray-200 dark:border-dark-border text-gray-900 dark:text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm sm:text-base"
                 placeholder={t('snippets.form.title_placeholder')}
               />
             </div>
@@ -155,7 +155,7 @@ export const SnippetForm: React.FC = () => {
             <div className="space-y-3">
               <div className="flex flex-wrap gap-2 mb-2">
                 {formData.tags.map(tag => (
-                  <span key={tag} className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm">
+                  <span key={tag} className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-xs sm:text-sm">
                     {tag}
                     <button type="button" onClick={() => removeTag(tag)} className="hover:text-primary-900 dark:hover:text-primary-100">
                       &times;
@@ -168,7 +168,7 @@ export const SnippetForm: React.FC = () => {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleAddTag}
-                className="w-full bg-gray-50 dark:bg-[#0f0f11] border border-gray-200 dark:border-dark-border text-gray-900 dark:text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
+                className="w-full bg-gray-50 dark:bg-[#0f0f11] border border-gray-200 dark:border-dark-border text-gray-900 dark:text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm sm:text-base"
                 placeholder={t('snippets.form.tags_placeholder')}
               />
               {availableTags.length > 0 && (
@@ -199,7 +199,7 @@ export const SnippetForm: React.FC = () => {
                 height="500px"
               />
             </div>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
               {t('snippets.form.max_chars')}
             </p>
           </div>
@@ -207,7 +207,7 @@ export const SnippetForm: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-xl transition-all shadow-lg shadow-primary-900/20 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
+            className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all shadow-lg shadow-primary-900/20 font-bold text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
           >
             <Save className="w-5 h-5" />
             {loading ? t('snippets.form.saving') : (isEditing ? t('snippets.form.update') : t('snippets.form.save'))}
