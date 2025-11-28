@@ -123,11 +123,11 @@ export const Profile: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg px-4 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg px-4 py-6 sm:py-12">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-dark-border">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-200 dark:border-dark-border">
+          <div className="flex items-center justify-between mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
               {t('profile.title')}
             </h2>
           </div>
@@ -141,7 +141,7 @@ export const Profile: React.FC = () => {
                   {t('auth.username')}
                 </div>
               </label>
-              <div className="w-full px-4 py-3 bg-gray-100 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg text-gray-700 dark:text-gray-300">
+              <div className="w-full px-4 py-3 bg-gray-100 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg text-gray-700 dark:text-gray-300 text-sm sm:text-base">
                 {user.username}
               </div>
             </div>
@@ -154,23 +154,23 @@ export const Profile: React.FC = () => {
                   {t('auth.email')}
                 </div>
               </label>
-              <div className="w-full px-4 py-3 bg-gray-100 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg text-gray-700 dark:text-gray-300">
+              <div className="w-full px-4 py-3 bg-gray-100 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg text-gray-700 dark:text-gray-300 text-sm sm:text-base">
                 {user.email}
               </div>
             </div>
 
             {/* Change Password Button */}
-            <div className="pt-4 flex justify-between">
+            <div className="pt-4 flex flex-col sm:flex-row justify-between gap-3">
               <button
                 onClick={() => setShowPasswordModal(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-dark-surface transition-all"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-dark-surface transition-all text-sm sm:text-base"
               >
                 <Key className="w-4 h-4" />
                 {t('profile.change_password')}
               </button>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-medium hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-dark-surface transition-all"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-medium hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-dark-surface transition-all text-sm sm:text-base"
               >
                 <LogOut className="w-4 h-4" />
                 {t('profile.logout')}
@@ -185,7 +185,7 @@ export const Profile: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-200 dark:border-dark-border">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {t('profile.modal.title')}
               </h3>
               <button
@@ -230,7 +230,7 @@ export const Profile: React.FC = () => {
                   onChange={(e) =>
                     setPasswordData({ ...passwordData, old_password: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all text-sm sm:text-base"
                   required
                 />
               </div>
@@ -245,7 +245,7 @@ export const Profile: React.FC = () => {
                   onChange={(e) =>
                     setPasswordData({ ...passwordData, new_password: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all text-sm sm:text-base"
                   required
                 />
               </div>
@@ -260,12 +260,12 @@ export const Profile: React.FC = () => {
                   onChange={(e) =>
                     setPasswordData({ ...passwordData, confirm_new_password: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-dark-bg border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 transition-all text-sm sm:text-base"
                   required
                 />
               </div>
 
-              <div className="flex gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -273,14 +273,14 @@ export const Profile: React.FC = () => {
                     setPasswordErrors([]);
                     setPasswordData({ old_password: '', new_password: '', confirm_new_password: '' });
                   }}
-                  className="flex-1 px-4 py-3 border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-dark-bg transition-all"
+                  className="flex-1 px-4 py-3 border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-dark-bg transition-all text-sm sm:text-base"
                 >
                   {t('profile.modal.cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={changingPassword}
-                  className="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 >
                   {changingPassword ? t('profile.modal.submitting') : t('profile.modal.submit')}
                 </button>

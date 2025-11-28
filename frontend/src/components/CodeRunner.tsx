@@ -146,19 +146,19 @@ export function CodeRunner() {
   const versions = availableVersions[language.id] || [];
 
   return (
-    <div className="container mx-auto px-4 py-8 h-[calc(100vh-64px)] flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <Terminal className="w-6 h-6" />
+    <div className="container mx-auto px-4 py-4 sm:py-8 h-[calc(100vh-64px)] flex flex-col">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <Terminal className="w-5 h-5 sm:w-6 sm:h-6" />
           {t('runner.title')}
         </h1>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:w-auto">
 
           {/* Language Selector */}
-          <div className="relative w-40" ref={langDropdownRef}>
+          <div className="relative w-full sm:w-40" ref={langDropdownRef}>
             <button
               onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-              className="w-full px-4 py-2 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-left flex items-center justify-between text-gray-900 dark:text-white"
+              className="w-full px-3 sm:px-4 py-2 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-left flex items-center justify-between text-gray-900 dark:text-white text-sm sm:text-base"
             >
               <span className="truncate">{language.name}</span>
               <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isLangDropdownOpen ? 'transform rotate-180' : ''}`} />
@@ -170,7 +170,7 @@ export function CodeRunner() {
                   <button
                     key={lang.id}
                     onClick={() => handleLanguageChange(lang.id)}
-                    className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-dark-border transition-colors flex items-center justify-between ${
+                    className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-dark-border transition-colors flex items-center justify-between text-sm sm:text-base ${
                       language.id === lang.id ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
@@ -184,10 +184,10 @@ export function CodeRunner() {
 
           {/* Version Selector */}
           {versions.length > 0 && (
-             <div className="relative w-32" ref={versionDropdownRef}>
+             <div className="relative w-full sm:w-32" ref={versionDropdownRef}>
              <button
                onClick={() => setIsVersionDropdownOpen(!isVersionDropdownOpen)}
-               className="w-full px-4 py-2 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-left flex items-center justify-between text-gray-900 dark:text-white"
+               className="w-full px-3 sm:px-4 py-2 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-left flex items-center justify-between text-gray-900 dark:text-white text-sm sm:text-base"
              >
                <span className="truncate">{selectedVersion || t('runner.select_version')}</span>
                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isVersionDropdownOpen ? 'transform rotate-180' : ''}`} />
@@ -202,7 +202,7 @@ export function CodeRunner() {
                         setSelectedVersion(ver);
                         setIsVersionDropdownOpen(false);
                      }}
-                     className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-dark-border transition-colors flex items-center justify-between ${
+                     className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-dark-border transition-colors flex items-center justify-between text-sm sm:text-base ${
                        selectedVersion === ver ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300'
                      }`}
                    >
@@ -218,7 +218,7 @@ export function CodeRunner() {
           <button
             onClick={handleRun}
             disabled={isRunning}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 border border-transparent text-sm font-medium rounded-xl shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isRunning ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -230,9 +230,9 @@ export function CodeRunner() {
         </div>
       </div>
 
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 min-h-0">
-        <div className="border rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-800 flex flex-col">
-            <div className="bg-gray-50 dark:bg-gray-700 px-4 py-2 border-b dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-300">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 min-h-0">
+        <div className="border rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-800 flex flex-col min-h-[300px] md:min-h-0">
+            <div className="bg-gray-50 dark:bg-gray-700 px-3 sm:px-4 py-2 border-b dark:border-gray-600 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-300">
                 {t('runner.editor')}
             </div>
             <div className="flex-1">
@@ -251,11 +251,11 @@ export function CodeRunner() {
             </div>
         </div>
 
-        <div className="border rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-800 flex flex-col">
-            <div className="bg-gray-50 dark:bg-gray-700 px-4 py-2 border-b dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-300">
+        <div className="border rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-800 flex flex-col min-h-[300px] md:min-h-0">
+            <div className="bg-gray-50 dark:bg-gray-700 px-3 sm:px-4 py-2 border-b dark:border-gray-600 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-300">
                 {t('runner.output')}
             </div>
-            <pre className="flex-1 p-4 bg-gray-900 text-green-400 font-mono text-sm overflow-auto whitespace-pre-wrap">
+            <pre className="flex-1 p-3 sm:p-4 bg-gray-900 text-green-400 font-mono text-xs sm:text-sm overflow-auto whitespace-pre-wrap">
                 {output || t('runner.output_placeholder')}
             </pre>
         </div>

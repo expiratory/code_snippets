@@ -130,11 +130,11 @@ export const SnippetList: React.FC = () => {
   }, [hasMore, loading, fetchSnippets]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+    <div className="max-w-7xl mx-auto px-4 py-6 sm:py-12">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8 sm:mb-12 gap-6">
       </div>
 
-      <div className="relative mb-12 max-w-2xl mx-auto flex gap-4">
+      <div className="relative mb-8 sm:mb-12 max-w-2xl mx-auto flex flex-col sm:flex-row gap-3 sm:gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
@@ -142,13 +142,13 @@ export const SnippetList: React.FC = () => {
             placeholder={t('snippets.search_placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-gray-900 dark:text-white placeholder-gray-500"
+            className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-gray-900 dark:text-white placeholder-gray-500 text-sm sm:text-base"
           />
         </div>
-        <div className="relative w-48" ref={dropdownRef}>
+        <div className="relative w-full sm:w-48" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="w-full pl-12 pr-4 py-4 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-left flex items-center justify-between text-gray-900 dark:text-white"
+            className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all shadow-sm text-left flex items-center justify-between text-gray-900 dark:text-white text-sm sm:text-base"
           >
             <Filter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <span className="truncate">{selectedTag || t('snippets.all_tags')}</span>
@@ -162,7 +162,7 @@ export const SnippetList: React.FC = () => {
                   setSelectedTag('');
                   setIsDropdownOpen(false);
                 }}
-                className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-dark-border transition-colors flex items-center justify-between ${
+                className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-dark-border transition-colors flex items-center justify-between text-sm sm:text-base ${
                   selectedTag === '' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -176,7 +176,7 @@ export const SnippetList: React.FC = () => {
                     setSelectedTag(tag.name);
                     setIsDropdownOpen(false);
                   }}
-                  className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-dark-border transition-colors flex items-center justify-between ${
+                  className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-dark-border transition-colors flex items-center justify-between text-sm sm:text-base ${
                     selectedTag === tag.name ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300'
                   }`}
                 >
@@ -188,7 +188,7 @@ export const SnippetList: React.FC = () => {
           )}
         </div>
 
-        <div className="relative w-48">
+        <div className="relative w-full sm:w-48">
           <LanguageSelect
             value={selectedLanguage}
             onChange={setSelectedLanguage}
@@ -203,7 +203,7 @@ export const SnippetList: React.FC = () => {
       ) : (
         <>
           {snippets.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {snippets.map((snippet) => (
                 <SnippetCard key={snippet.id} snippet={snippet} />
               ))}
@@ -213,8 +213,8 @@ export const SnippetList: React.FC = () => {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-dark-surface mb-6">
                 <Search className="w-8 h-8 text-gray-400" />
               </div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">{t('snippets.no_snippets_title')}</h3>
-              <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+              <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2">{t('snippets.no_snippets_title')}</h3>
+              <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 max-w-md mx-auto px-4">
                 {t('snippets.no_snippets_desc')}
               </p>
             </div>
@@ -222,7 +222,7 @@ export const SnippetList: React.FC = () => {
 
           {hasMore && snippets.length > 0 && (
             <div ref={observerTarget} className="h-10 flex items-center justify-center mt-8">
-              {loading && <div className="text-gray-500 dark:text-gray-400">{t('snippets.loading_more')}</div>}
+              {loading && <div className="text-sm sm:text-base text-gray-500 dark:text-gray-400">{t('snippets.loading_more')}</div>}
             </div>
           )}
         </>

@@ -56,12 +56,12 @@ export const SnippetDetail: React.FC = () => {
   if (!snippet) return null;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="max-w-4xl mx-auto px-4 py-6 sm:py-12">
       <div className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200 dark:border-dark-border overflow-hidden shadow-xl dark:shadow-none">
-        <div className="p-8 border-b border-gray-200 dark:border-dark-border flex items-start justify-between bg-gray-50/50 dark:bg-transparent">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">{snippet.title}</h1>
-            <span className="inline-block bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-4 py-1.5 rounded-full text-sm font-semibold">
+        <div className="p-4 sm:p-8 border-b border-gray-200 dark:border-dark-border flex flex-col sm:flex-row items-start justify-between bg-gray-50/50 dark:bg-transparent gap-4">
+          <div className="flex-1 w-full">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">{snippet.title}</h1>
+            <span className="inline-block bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold">
               {typeof snippet.language === 'object' ? snippet.language?.name : snippet.language}
             </span>
             {snippet.tags && snippet.tags.length > 0 && (
@@ -77,10 +77,10 @@ export const SnippetDetail: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
               onClick={handleCopy}
-              className="p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all"
+              className="flex-1 sm:flex-none p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all flex items-center justify-center"
               title={t('snippets.detail.copy')}
             >
               {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
@@ -92,21 +92,21 @@ export const SnippetDetail: React.FC = () => {
                   language: typeof snippet.language === 'object' ? snippet.language?.name : snippet.language
                 }
               })}
-              className="p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all"
+              className="flex-1 sm:flex-none p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all flex items-center justify-center"
               title={t('snippets.detail.run')}
             >
               <Play className="w-5 h-5" />
             </button>
             <Link
               to={`/snippets/${id}/edit`}
-              className="p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all"
+              className="flex-1 sm:flex-none p-2.5 text-gray-500 hover:text-primary-600 hover:bg-primary-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 rounded-xl transition-all flex items-center justify-center"
               title={t('snippets.detail.edit')}
             >
               <Edit className="w-5 h-5" />
             </Link>
             <button
               onClick={handleDeleteClick}
-              className="p-2.5 text-gray-500 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-xl transition-all"
+              className="flex-1 sm:flex-none p-2.5 text-gray-500 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-xl transition-all flex items-center justify-center"
               title={t('snippets.detail.delete')}
             >
               <Trash2 className="w-5 h-5" />
@@ -130,10 +130,10 @@ export const SnippetDetail: React.FC = () => {
         title={t('snippets.detail.delete_modal.title')}
       >
         <div className="space-y-6">
-          <p className="text-gray-600 dark:text-gray-300">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
             {t('snippets.detail.delete_modal.confirm')}
           </p>
-          <div className="flex justify-end gap-3">
+          <div className="flex flex-col sm:flex-row justify-end gap-3">
             <button
               onClick={() => setIsDeleteModalOpen(false)}
               className="px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors font-medium"
