@@ -3,6 +3,7 @@ import asyncio
 import docker
 
 from app.config import settings
+from app.constants import AVAILABLE_IMAGES
 from app.enums.language import RunLanguage
 
 
@@ -13,38 +14,51 @@ class CodeRunnerService:
     def __init__(self):
         self.client = docker.from_env()
 
-    async def run_code(self, code: str, language: str, timeout: int = 10):
+    async def run_code(
+        self, code: str, language: str, version: str = None, timeout: int = 10
+    ):
         # Use semaphore to limit concurrent executions
         async with self._semaphore:
-            return await self._execute_code(code, language, timeout)
+            return await self._execute_code(code, language, version, timeout)
 
-    async def _execute_code(self, code: str, language: str, timeout: int = 10):
+    def get_available_versions(self):
+        return {
+            lang: [v["version"] for v in versions]
+            for lang, versions in AVAILABLE_IMAGES.items()
+        }
+
+    async def _execute_code(
+        self, code: str, language: str, version: str = None, timeout: int = 10
+    ):
         container = None
 
         try:
+            image = self._get_image(language, version)
             # Pull image if not present
             try:
                 loop = asyncio.get_event_loop()
-                await loop.run_in_executor(
-                    None, lambda: self.client.images.pull(self._get_image(language))
-                )
+                await loop.run_in_executor(None, lambda: self.client.images.pull(image))
             except Exception:
                 pass  # Image might already exist
 
             # Run code in container - pass code via command
             container = self.client.containers.run(
-                image=self._get_image(language),
+                image=image,
                 command=self._get_command(code, language),
-                mem_limit="100m",
+                mem_limit="200m",
                 cpu_period=100000,
-                cpu_quota=10000,  # 10%
+                cpu_quota=50000,  # 50%
                 network_mode="none",
                 working_dir="/tmp",
                 read_only=True,  # Read-only root filesystem
-                tmpfs={"/tmp": "size=10m,mode=1777"},  # Writable /tmp with size limit
+                tmpfs={
+                    "/tmp": "size=10m,mode=1777,exec",
+                    "/root/.cache": "size=50m,mode=1777,exec",  # Writable cache for Go builds etc
+                    "/root/.config": "size=10m,mode=1777,exec",  # Some tools might need config dir
+                },  # Writable /tmp with size limit
                 cap_drop=["ALL"],  # Drop all capabilities
                 security_opt=["no-new-privileges"],  # Prevent privilege escalation
-                pids_limit=50,  # Limit number of processes
+                pids_limit=200,  # Limit number of processes
                 stdout=True,
                 stderr=True,
                 detach=True,
@@ -64,9 +78,14 @@ class CodeRunnerService:
                 return {"stdout": "", "stderr": "Timeout exceeded", "exit_code": -1}
 
         except docker.errors.ImageNotFound:
+            error_msg = f"Image for {language}"
+            if version:
+                error_msg += f" {version}"
+            error_msg += " not found"
+
             return {
                 "stdout": "",
-                "stderr": f"Image for {language} not found",
+                "stderr": error_msg,
                 "exit_code": -1,
             }
         except Exception as e:
@@ -79,14 +98,19 @@ class CodeRunnerService:
                 except Exception:
                     pass
 
-    def _get_image(self, language: str):
-        images = {
-            RunLanguage.PYTHON.value: "python:3.9-slim",
-            RunLanguage.JAVASCRIPT.value: "node:16-alpine",
-            RunLanguage.JAVA.value: "eclipse-temurin:17-jdk-alpine",
-            RunLanguage.GO.value: "golang:1.19-alpine",
-        }
-        return images.get(language, "python:3.9-slim")
+    def _get_image(self, language: str, version: str = None):
+        versions = AVAILABLE_IMAGES.get(language, [])
+        if not versions:
+            # Fallback or default
+            return "python:3.9-slim"
+
+        if version:
+            for v in versions:
+                if v["version"] == version:
+                    return v["image"]
+
+        # Default to first version if not specified or not found
+        return versions[0]["image"]
 
     def _get_command(self, code: str, language: str):
         # Escape code for shell - use base64 to avoid escaping issues

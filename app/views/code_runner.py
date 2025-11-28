@@ -11,6 +11,16 @@ from app.schemas.code_runner import CodeRunRequest
 router = APIRouter(prefix="/code", tags=["code"])
 
 
+@router.get("/versions")
+async def get_available_versions():
+    from app.constants import AVAILABLE_IMAGES
+
+    return {
+        lang: [v["version"] for v in versions]
+        for lang, versions in AVAILABLE_IMAGES.items()
+    }
+
+
 @router.websocket("/ws/run")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -42,6 +52,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     "task_id": task_id,
                     "code": request.code,
                     "language": request.language,
+                    "version": request.version,
                 },
             )
 
