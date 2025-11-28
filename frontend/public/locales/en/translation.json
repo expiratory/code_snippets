@@ -133,7 +133,9 @@
     "output": "Output",
     "output_placeholder": "// Output will appear here",
     "running": "Running...",
-    "connection_lost": "Connection lost. Reconnecting..."
+    "connection_lost": "Connection lost. Reconnecting...",
+    "version": "Version",
+    "select_version": "Select Version"
   },
   "loading": "Loading..."
 }

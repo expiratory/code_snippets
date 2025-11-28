@@ -30,6 +30,14 @@ async def test_run_code_success(code_runner_service):
     assert result["exit_code"] == 0
     code_runner_service.client.containers.run.assert_called_once()
 
+    # Verify tmpfs config
+    args, kwargs = code_runner_service.client.containers.run.call_args
+    assert "exec" in kwargs["tmpfs"]["/tmp"]
+    assert "exec" in kwargs["tmpfs"]["/root/.cache"]
+    assert kwargs["read_only"] is True
+    assert kwargs["pids_limit"] == 200
+    assert kwargs["mem_limit"] == "200m"
+
 
 @pytest.mark.asyncio
 async def test_run_code_timeout(code_runner_service):
@@ -64,3 +72,41 @@ async def test_run_code_docker_error(code_runner_service):
 
     assert result["exit_code"] == -1
     assert "Image for python not found" in result["stderr"]
+
+
+def test_get_available_versions(code_runner_service):
+    versions = code_runner_service.get_available_versions()
+    assert "python" in versions
+    assert "javascript" in versions
+    assert "3.9" in versions["python"]
+    assert "16" in versions["javascript"]
+
+
+@pytest.mark.asyncio
+async def test_run_code_with_version(code_runner_service):
+    mock_container = MagicMock()
+    mock_container.wait.return_value = {"StatusCode": 0}
+    mock_container.logs.return_value = b"Hello World\n"
+
+    code_runner_service.client.containers.run.return_value = mock_container
+
+    await code_runner_service.run_code('print("Hello")', "python", version="3.11")
+
+    # Verify that the correct image was used
+    args, kwargs = code_runner_service.client.containers.run.call_args
+    assert kwargs["image"] == "python:3.11-slim"
+
+
+@pytest.mark.asyncio
+async def test_run_code_with_invalid_version(code_runner_service):
+    # Should fall back to default version if version not found in list
+    mock_container = MagicMock()
+    mock_container.wait.return_value = {"StatusCode": 0}
+    mock_container.logs.return_value = b"Hello World\n"
+    code_runner_service.client.containers.run.return_value = mock_container
+
+    await code_runner_service.run_code('print("Hello")', "python", version="99.99")
+
+    args, kwargs = code_runner_service.client.containers.run.call_args
+    # Should use default python image
+    assert kwargs["image"] == "python:3.9-slim"

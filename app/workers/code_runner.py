@@ -17,10 +17,11 @@ async def process_message(message, code_runner_service: CodeRunnerService):
         task_id = data.get("task_id")
         code = data.get("code")
         language = data.get("language")
+        version = data.get("version")
 
-        logger.info(f"Processing task {task_id} for {language}")
+        logger.info(f"Processing task {task_id} for {language} {version}")
 
-        result = await code_runner_service.run_code(code, language)
+        result = await code_runner_service.run_code(code, language, version)
 
         # Publish result to Redis
         redis_gen = get_redis()

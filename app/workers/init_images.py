@@ -9,6 +9,8 @@ import sys
 
 import docker
 
+from app.constants import AVAILABLE_IMAGES
+
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
@@ -16,10 +18,7 @@ logger = logging.getLogger(__name__)
 
 # Images to pre-pull
 IMAGES = [
-    "python:3.9-slim",
-    "node:16-alpine",
-    "eclipse-temurin:17-jdk-alpine",
-    "golang:1.19-alpine",
+    version["image"] for versions in AVAILABLE_IMAGES.values() for version in versions
 ]
 
 
@@ -31,6 +30,13 @@ def pull_images():
 
         for image in IMAGES:
             try:
+                try:
+                    client.images.get(image)
+                    logger.info(f"✓ Image {image} already exists locally")
+                    continue
+                except docker.errors.ImageNotFound:
+                    logger.info(f"Image {image} not found locally, pulling...")
+
                 logger.info(f"Pulling {image}...")
                 client.images.pull(image)
                 logger.info(f"✓ Successfully pulled {image}")
